@@ -10,9 +10,9 @@ export const action =
   async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
-
+    
     try {
-      const response = await customFetch.post('/auth/local', data);
+      const response = await customFetch.post('/auth/login', data);
       store.dispatch(loginUser(response.data));
       toast.success('logged in successfully');
       return redirect('/');

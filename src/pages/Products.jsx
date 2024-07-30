@@ -1,6 +1,6 @@
-import { Filters, PaginationContainer, ProductsContainer } from '../components';
-import { customFetch } from '../utils';
-const url = '/products';
+import { Filters, PaginationContainer, ProductsContainer } from "../components";
+import { customFetch } from "../utils";
+const url = "/products";
 
 const allProductsQuery = (queryParams) => {
   const { search, category, company, sort, price, shipping, page } =
@@ -8,11 +8,11 @@ const allProductsQuery = (queryParams) => {
 
   return {
     queryKey: [
-      'products',
-      search ?? '',
-      category ?? 'all',
-      company ?? 'all',
-      sort ?? 'a-z',
+      "products",
+      search ?? "",
+      category ?? "all",
+      company ?? "all",
+      sort ?? "a-z",
       price ?? 100000,
       shipping ?? false,
       page ?? 1,
@@ -48,4 +48,5 @@ const Products = () => {
     </>
   );
 };
+
 export default Products;

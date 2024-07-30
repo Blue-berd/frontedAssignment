@@ -24,3 +24,6 @@ export const generateAmountOptions = (number) => {
     );
   });
 };
+export const getToken = () => {
+  return localStorage.getItem("authToken");
+};

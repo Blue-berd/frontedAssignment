@@ -1,16 +1,15 @@
-import { FeaturedProducts, Hero } from '../components';
+import { FeaturedProducts, Hero } from "../components";
 
-import { customFetch } from '../utils';
-const url = '/products?featured=true';
+import { customFetch } from "../utils";
+const url = "/products";
 
 const featuredProductsQuery = {
-  queryKey: ['featuredProducts'],
+  queryKey: ["featuredProducts"],
   queryFn: () => customFetch(url),
 };
 
 export const loader = (queryClient) => async () => {
   const response = await queryClient.ensureQueryData(featuredProductsQuery);
-
   const products = response.data.data;
   return { products };
 };
@@ -23,4 +22,5 @@ const Landing = () => {
     </>
   );
 };
+
 export default Landing;

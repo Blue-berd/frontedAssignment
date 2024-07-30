@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { redirect, useLoaderData } from "react-router-dom";
 import {
   ComplexPaginationContainer,
   OrdersList,
   SectionTitle,
 } from "../components";
 import { postOrder } from "./postOrder.js";
+
 
 const Orders = () => {
   const { meta, orders } = useLoaderData();
@@ -23,8 +24,6 @@ const Orders = () => {
 
     try {
       await postOrder(orderData);
-      // Optionally, you can fetch the latest orders or redirect the user
-      // e.g., redirect('/orders');
     } catch (error) {
       console.error("Error placing order:", error);
     } finally {
@@ -44,8 +43,7 @@ const Orders = () => {
       <button
         className="btn btn-primary mt-4"
         onClick={handlePlaceOrder}
-        disabled={isLoading}
-      >
+        disabled={isLoading}>
         {isLoading ? "Placing Order..." : "Place Order"}
       </button>
     </>

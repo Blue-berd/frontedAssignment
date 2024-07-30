@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
-import { toast } from "react-toastify";
-import { postOrder } from "../utils/api";
 import {
-  OrdersList,
   ComplexPaginationContainer,
+  OrdersList,
   SectionTitle,
 } from "../components";
+import { postOrder } from "./postOrder.js";
 
 const Orders = () => {
   const { meta, orders } = useLoaderData();

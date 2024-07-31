@@ -1,4 +1,4 @@
-export const handler = async () => {
+export const handler = async (event) => {
   try {
     const token = event.headers.authorization || "";
 

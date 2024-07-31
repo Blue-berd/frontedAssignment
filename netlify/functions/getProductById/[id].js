@@ -6,6 +6,7 @@ export const handler = async (event) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
       },
     });
 

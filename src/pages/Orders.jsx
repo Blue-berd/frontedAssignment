@@ -1,7 +1,19 @@
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { postOrder } from "./postOrder.js";
 import { OrdersList, SectionTitle, ErrorElement } from "../components";
 import { customFetch, getToken } from "../utils/index.jsx";
+=======
+import { useState } from "react";
+import { redirect, useLoaderData } from "react-router-dom";
+import {
+  ComplexPaginationContainer,
+  OrdersList,
+  SectionTitle,
+} from "../components";
+import { postOrder } from "./postOrder.js";
+
+>>>>>>> 162dc87da656abdfb57b681024c1298441b81db6
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -45,7 +57,10 @@ const Orders = () => {
 
     try {
       await postOrder(orderData);
+<<<<<<< HEAD
       console.log("Order placed successfully");
+=======
+>>>>>>> 162dc87da656abdfb57b681024c1298441b81db6
     } catch (error) {
       console.error("Error placing order:", error);
     }
@@ -80,12 +95,23 @@ const Orders = () => {
   return (
     <>
       <SectionTitle text="Your Orders" />
+<<<<<<< HEAD
       <OrdersList orders={orders} />
       <div className="text-center mt-4">
         <button className="btn btn-primary" onClick={handlePlaceOrder}>
           Place Order
         </button>
       </div>
+=======
+      <OrdersList />
+      <ComplexPaginationContainer />
+      <button
+        className="btn btn-primary mt-4"
+        onClick={handlePlaceOrder}
+        disabled={isLoading}>
+        {isLoading ? "Placing Order..." : "Place Order"}
+      </button>
+>>>>>>> 162dc87da656abdfb57b681024c1298441b81db6
     </>
   );
 };

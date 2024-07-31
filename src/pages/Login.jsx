@@ -12,7 +12,7 @@ export const action =
     const data = Object.fromEntries(formData);
 
     try {
-      const response = await customFetch.post("/auth/login", data);
+      const response = await customFetch.post("/login", data); // Changed URL
       store.dispatch(loginUser(response.data));
       localStorage.setItem("authToken", response.data.token); 
       toast.success("Logged in successfully");
@@ -32,16 +32,16 @@ const Login = () => {
 
   const loginAsGuestUser = async () => {
     try {
-      const response = await customFetch.post("/auth/local", {
+      const response = await customFetch.post("/login", {
         email: "test@test.com",
         password: "secret",
-      });
+      }); // Changed URL
       dispatch(loginUser(response.data));
-      toast.success("welcome guest user");
+      toast.success("Welcome guest user");
       navigate("/");
     } catch (error) {
       console.log(error);
-      toast.error("guest user login error. please try again");
+      toast.error("Guest user login error. Please try again");
     }
   };
 
@@ -49,7 +49,7 @@ const Login = () => {
     <section className="h-screen grid place-items-center">
       <Form
         method="post"
-        className="card w-96  p-8 bg-base-100 shadow-lg flex flex-col gap-y-4"
+        className="card w-96 p-8 bg-base-100 shadow-lg flex flex-col gap-y-4"
       >
         <h4 className="text-center text-3xl font-bold">Login</h4>
         <FormInput type="email" label="email" name="email" />
@@ -62,7 +62,7 @@ const Login = () => {
           className="btn btn-secondary btn-block"
           onClick={loginAsGuestUser}
         >
-          guest user
+          Guest User
         </button>
         <p className="text-center">
           Not a member yet?{" "}
@@ -70,11 +70,12 @@ const Login = () => {
             to="/register"
             className="ml-2 link link-hover link-primary capitalize"
           >
-            register
+            Register
           </Link>
         </p>
       </Form>
     </section>
   );
 };
+
 export default Login;

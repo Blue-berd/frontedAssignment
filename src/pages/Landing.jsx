@@ -1,7 +1,7 @@
 import { FeaturedProducts, Hero } from "../components";
 
 import { customFetch } from "../utils/index";
-const url = "/products";
+const url = "/getAllProducts";
 
 const featuredProductsQuery = {
   queryKey: ["featuredProducts"],

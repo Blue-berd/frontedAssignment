@@ -1,6 +1,6 @@
 import { PaginationContainer, ProductsContainer } from "../components";
 import { customFetch } from "../utils";
-const url = "/products";
+const url = "/getAllProducts";
 
 const allProductsQuery = () => {
   return {

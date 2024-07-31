@@ -1,9 +1,9 @@
-import { useSelector, useDispatch } from "react-redux";
-import { CartItemsList, SectionTitle, CartTotals } from "../components";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { customFetch, getToken } from "../utils";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { CartItemsList, CartTotals, SectionTitle } from "../components";
 import { addItem } from "../features/cart/cartSlice";
+import { customFetch, getToken } from "../utils";
 
 const Cart = () => {
   const user = useSelector((state) => state.userState.user);
@@ -16,7 +16,7 @@ const Cart = () => {
     const fetchCartItems = async () => {
       try {
         const token = getToken();
-        const response = await customFetch.get("/cart", {
+        const response = await customFetch.get("/getCart", {
           headers: {
             "Content-Type": "application/json",
             authorization: `Bearer ${token}`,

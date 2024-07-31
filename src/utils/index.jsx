@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const productionUrl = "http://3.109.32.83:3000/api";
+const productionUrl = "/.netlify/functions";
 
 export const customFetch = axios.create({
   baseURL: productionUrl,

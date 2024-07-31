@@ -1,18 +1,17 @@
-import { useLoaderData } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLoaderData } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
-  formatPrice,
   customFetch,
+  formatPrice,
   generateAmountOptions,
   getToken,
 } from "../utils";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { toast } from "react-toastify";
 
-const singleProductQuery = (id) => {
+const singleProductQuery = (id, category) => {
   return {
-    queryKey: ["singleProduct", id],
-    queryFn: () => customFetch(`/products/${id}`),
+    queryKey: ["singleProduct", id, category],
+    queryFn: () => customFetch.get(`/getProductById/${id}`),
   };
 };
 
@@ -39,7 +38,7 @@ const SingleProduct = () => {
     try {
       const token = getToken();
       const response = await customFetch.post(
-        "/cart",
+        "/addToCart",
         { productId: product._id, quantity: amount },
         {
           headers: {
@@ -113,8 +112,7 @@ const SingleProduct = () => {
               className="select select-secondary select-bordered select-md"
               id="amount"
               value={amount}
-              onChange={handleAmount}
-            >
+              onChange={handleAmount}>
               {generateAmountOptions(20)}
             </select>
           </div>

@@ -12,7 +12,7 @@ const Orders = () => {
     const fetchOrders = async () => {
       const token = getToken();
       try {
-        const response = await customFetch.get("/orders", {
+        const response = await customFetch.get("/getOrders", {
           headers: {
             "Content-Type": "application/json",
             authorization: `Bearer ${token}`,

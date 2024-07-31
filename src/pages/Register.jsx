@@ -6,7 +6,7 @@ import { customFetch } from "../utils";
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-
+let response;
   try {
     console.log({
       ...data,
@@ -14,25 +14,24 @@ export const action = async ({ request }) => {
     });
 
     // Convert data to JSON string
-    const response = await customFetch.post(
-      "/auth/register",
-      JSON.stringify({
-        ...data,
-        role: "user",
-      }),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+     response = await customFetch.post(
+       "/register",
+       {
+         ...data,
+         role: "user",
+       },
+       {
+         headers: {
+           "Content-Type": "application/json",
+         },
+       }
+     );
 
     toast.success("Account created successfully");
     return redirect("/login");
   } catch (error) {
     const errorMessage =
-      error?.response?.data?.error?.message ||
-      "Please double-check your credentials";
+      response?.data?.message || "Please double-check your credentials";
     toast.error(errorMessage);
     return null;
   }

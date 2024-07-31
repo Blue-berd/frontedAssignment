@@ -1,7 +1,7 @@
 import { Form, redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { clearCart } from "../features/cart/cartSlice";
-import { customFetch, formatPrice, getToken } from "../utils";
+import { customFetch, getToken } from "../utils";
 import FormInput from "./FormInput";
 import SubmitBtn from "./SubmitBtn";
 
@@ -9,23 +9,19 @@ export const action =
   (store, queryClient) =>
   async ({ request }) => {
     const formData = await request.formData();
-    const { name, address } = Object.fromEntries(formData);
-    const { cartItems, orderTotal, numItemsInCart } =
-      store.getState().cartState;
+    const { address, pincode } = Object.fromEntries(formData);
+    const { cartItems } = store.getState().cartState;
 
     const info = {
-      name,
       address,
-      chargeTotal: orderTotal,
-      orderTotal: formatPrice(orderTotal),
-      cartItems,
-      numItemsInCart,
+      pincode,
+      cartItems: cartItems.map((item) => ({ productId: item.id })),
     };
-    let response;
+
     try {
       const token = getToken();
 
-      response = await customFetch.post(
+      await customFetch.post(
         "/orders",
         { data: info },
         {
@@ -36,18 +32,15 @@ export const action =
       );
       queryClient.removeQueries(["orders"]);
       store.dispatch(clearCart());
-      toast.success("order placed successfully");
+      toast.success("Order placed successfully");
       return redirect("/orders");
     } catch (error) {
       console.log(error);
       const errorMessage =
         error?.response?.data?.error?.message ||
-        "there was an error placing your order";
+        "There was an error placing your order";
       toast.error(errorMessage);
-      if (
-        response.data.http_status_code === 401 ||
-        response.data.http_status_code === 403
-      ) {
+      if (error.response?.status === 401 || error.response?.status === 403) {
         return redirect("/login");
       }
       return null;
@@ -57,11 +50,11 @@ export const action =
 const CheckoutForm = () => {
   return (
     <Form method="POST" className="flex flex-col gap-y-4">
-      <h4 className="font-medium text-xl capitalize">shipping information</h4>
-      <FormInput label="first name" name="name" type="text" />
-      <FormInput label="address" name="address" type="text" />
+      <h4 className="font-medium text-xl capitalize">Shipping Information</h4>
+      <FormInput label="Address" name="address" type="text" />
+      <FormInput label="Pincode" name="pincode" type="number" />
       <div className="mt-4">
-        <SubmitBtn text="place your order" />
+        <SubmitBtn text="Place Your Order" />
       </div>
     </Form>
   );

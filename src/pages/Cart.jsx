@@ -7,8 +7,8 @@ import { addItem } from "../features/cart/cartSlice";
 
 const Cart = () => {
   const user = useSelector((state) => state.userState.user);
+  const cartItems = useSelector((state) => state.cartState.cartItems);
   const dispatch = useDispatch();
-  const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -24,20 +24,26 @@ const Cart = () => {
         });
 
         const cartData = response.data.data;
+
+        // Only add items that are not already in the store
         cartData.forEach((cartProduct) => {
-          dispatch(addItem({ product: cartProduct }));
+          const itemExists = cartItems.some(
+            (item) => item.productId._id === cartProduct.productId._id
+          );
+          if (!itemExists) {
+            dispatch(addItem({ product: cartProduct }));
+          }
         });
 
-        setCartItems(cartData);
         setLoading(false);
       } catch (err) {
-        setError("Failed to fetch cart items");
+        setError("No cart items to fetch");
         setLoading(false);
       }
     };
 
     fetchCartItems();
-  }, []);
+  }, [user, cartItems, dispatch]);
 
   const numItemsInCart = cartItems.reduce(
     (total, item) => total + item.quantity,

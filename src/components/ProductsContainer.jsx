@@ -1,12 +1,12 @@
-// import { useLoaderData } from 'react-router-dom';
+import { useLoaderData } from "react-router-dom";
 import ProductsGrid from "./ProductsGrid";
 import ProductsList from "./ProductsList";
 import { useState } from "react";
 import { BsFillGridFill, BsList } from "react-icons/bs";
 
 const ProductsContainer = () => {
-  // const { meta } = useLoaderData();
-  const totalProducts = 100;
+  const { products } = useLoaderData();
+  const totalProducts = products.length;
 
   const [layout, setLayout] = useState("grid");
 
@@ -17,7 +17,13 @@ const ProductsContainer = () => {
         : "btn-ghost text-based-content"
     }`;
   };
-
+  if (totalProducts === 0) {
+    return (
+      <>
+        <h4 className="font-bold text-4xl">No products to show</h4>
+      </>
+    );
+  }
   return (
     <>
       {/* HEADER */}
@@ -49,12 +55,13 @@ const ProductsContainer = () => {
             Sorry, no products matched your search...
           </h5>
         ) : layout === "grid" ? (
-          <ProductsGrid />
+          <ProductsGrid products={products} />
         ) : (
-          <ProductsList />
+          <ProductsList products={products} />
         )}
       </div>
     </>
   );
 };
+
 export default ProductsContainer;

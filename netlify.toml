@@ -1,0 +1,28 @@
+[build]
+  # The base directory where the build command is run
+  base = "/"
+
+  # The directory where the build output is located
+  publish = "dist"
+
+  # Command to build your project
+  command = "npm run build"
+
+[functions]
+  # Directory where Netlify functions are stored
+  directory = "netlify/functions"
+
+[dev]
+  # Redirect requests to functions
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200

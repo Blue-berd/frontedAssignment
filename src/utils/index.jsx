@@ -1,9 +1,13 @@
 import axios from "axios";
 
-const productionUrl = "./netlify/functions";
+// Determine the base URL based on the environment
+const baseURL =
+  import.meta.env.MODE === "development"
+    ? "http://localhost:8888/.netlify/functions" // Local development URL
+    : "/.netlify/functions"; // Production URL
 
 export const customFetch = axios.create({
-  baseURL: productionUrl,
+  baseURL: baseURL,
 });
 
 export const formatPrice = (price) => {

@@ -20,7 +20,7 @@ const Orders = () => {
         });
 
         if (response.data.data.length === 0) {
-          setError("No products to show");
+          setError("No orders to show");
         } else {
           setOrders(response.data.data);
         }

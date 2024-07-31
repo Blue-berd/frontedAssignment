@@ -28,15 +28,11 @@ export const action =
     try {
       const token = getToken();
 
-      await customFetch.post(
-        "/orders",
-        info,
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await customFetch.post("/createOrder", info, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       queryClient.removeQueries(["orders"]);
       store.dispatch(clearCart());
       toast.success("Order placed successfully");

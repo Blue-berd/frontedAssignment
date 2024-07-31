@@ -12,24 +12,26 @@ export const action =
     const { address, pincode } = Object.fromEntries(formData);
     const { cartItems } = store.getState().cartState;
 
+    // Debugging: Check cartItems structure
+    console.log("Cart Items:", cartItems);
+
     const info = {
       address,
       pincode,
       cartItems: cartItems.map((item) => ({ productId: item.id })),
     };
 
+    // Debugging: Check info structure
+    console.log("Info to be sent:", info);
+
     try {
       const token = getToken();
 
-      await customFetch.post(
-        "/orders",
-        { data: info },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await customFetch.post("/createOrder", info, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       queryClient.removeQueries(["orders"]);
       store.dispatch(clearCart());
       toast.success("Order placed successfully");

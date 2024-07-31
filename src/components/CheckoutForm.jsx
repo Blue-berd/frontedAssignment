@@ -1,9 +1,9 @@
 import { Form, redirect } from "react-router-dom";
-import FormInput from "./FormInput";
-import SubmitBtn from "./SubmitBtn";
-import { customFetch, formatPrice, getToken } from "../utils";
 import { toast } from "react-toastify";
 import { clearCart } from "../features/cart/cartSlice";
+import { customFetch, formatPrice, getToken } from "../utils";
+import FormInput from "./FormInput";
+import SubmitBtn from "./SubmitBtn";
 
 export const action =
   (store, queryClient) =>
@@ -21,11 +21,11 @@ export const action =
       cartItems,
       numItemsInCart,
     };
-
+    let response;
     try {
       const token = getToken();
 
-      const response = await customFetch.post(
+      response = await customFetch.post(
         "/orders",
         { data: info },
         {
@@ -44,7 +44,12 @@ export const action =
         error?.response?.data?.error?.message ||
         "there was an error placing your order";
       toast.error(errorMessage);
-      if (error?.response?.status === 401 || 403) return redirect("/login");
+      if (
+        response.data.http_status_code === 401 ||
+        response.data.http_status_code === 403
+      ) {
+        return redirect("/login");
+      }
       return null;
     }
   };

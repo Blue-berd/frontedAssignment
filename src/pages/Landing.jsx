@@ -1,6 +1,6 @@
 import { FeaturedProducts, Hero } from "../components";
 
-import { customFetch } from "../utils";
+import { customFetch } from "../utils/index";
 const url = "/products";
 
 const featuredProductsQuery = {

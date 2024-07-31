@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-=======
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
->>>>>>> 162dc87da656abdfb57b681024c1298441b81db6
 import {
   About,
   Cart,
@@ -24,17 +18,6 @@ import {
 import { ErrorElement } from "./components";
 
 // loaders
-<<<<<<< HEAD
-import { loader as landingLoader } from "./pages/Landing";
-import { loader as singleProductLoader } from "./pages/SingleProduct";
-import { loader as productsLoader } from "./pages/Products";
-import { loader as checkoutLoader } from "./pages/Checkout";
-// import { ordersLoader } from "./pages/Orders";
-// actions
-import { action as registerAction } from "./pages/Register";
-import { action as loginAction } from "./pages/Login";
-import { action as checkoutAction } from "./components/CheckoutForm";
-=======
 import { loader as checkoutLoader } from "./pages/Checkout";
 import { loader as landingLoader } from "./pages/Landing";
 import { loader as productsLoader } from "./pages/Products";
@@ -44,7 +27,6 @@ import { loader as singleProductLoader } from "./pages/SingleProduct";
 import { action as checkoutAction } from "./components/CheckoutForm";
 import { action as loginAction } from "./pages/Login";
 import { action as registerAction } from "./pages/Register";
->>>>>>> 162dc87da656abdfb57b681024c1298441b81db6
 import { store } from "./store";
 
 const queryClient = new QueryClient({
@@ -96,10 +78,6 @@ const router = createBrowserRouter([
       {
         path: "orders",
         element: <Orders />,
-<<<<<<< HEAD
-        // loader: ordersLoader(store, queryClient),
-=======
->>>>>>> 162dc87da656abdfb57b681024c1298441b81db6
       },
     ],
   },

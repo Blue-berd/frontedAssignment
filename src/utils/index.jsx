@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const productionUrl = "http://localhost:3000/api";
+const productionUrl = "http://3.109.32.83:3000/api";
 
 export const customFetch = axios.create({
   baseURL: productionUrl,

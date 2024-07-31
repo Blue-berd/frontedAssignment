@@ -1,12 +1,9 @@
-import fetch from "node-fetch";
-
 export const handler = async () => {
   try {
     const response = await fetch("http://3.109.32.83:3000/api/products", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        
       },
     });
 

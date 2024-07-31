@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const productionUrl = "/.netlify/functions";
+const productionUrl = "./netlify/functions";
 
 export const customFetch = axios.create({
   baseURL: productionUrl,

@@ -1,5 +1,3 @@
-import fetch from "node-fetch";
-
 export const handler = async () => {
   try {
     const token = event.headers.authorization || "";

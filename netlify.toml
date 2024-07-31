@@ -26,3 +26,9 @@
   from = "/"
   to = "/index.html"
   status = 200
+  
+[[redirects]]
+  from = "/products/:id"
+  to = "/.netlify/functions/getProductById/:id"
+  status = 200
+  force = true

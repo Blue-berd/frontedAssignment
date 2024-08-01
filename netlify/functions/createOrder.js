@@ -1,7 +1,9 @@
-
 export const handler = async (event) => {
   try {
-    const { products } = JSON.parse(event.body);
+    const parsedBody = JSON.parse(event.body);
+    console.log("Parsed Body:", parsedBody); // Add this line for debugging
+
+    const { products } = parsedBody;
     const token = event.headers.authorization || "";
 
     const response = await fetch("http://3.109.32.83:3000/api/orders", {
@@ -10,7 +12,7 @@ export const handler = async (event) => {
         "Content-Type": "application/json",
         authorization: token,
       },
-      body: JSON.stringify({ products }),
+      body: JSON.stringify(parsedBody),
     });
 
     if (!response.ok) {

@@ -1,19 +1,18 @@
 import CryptoJS from "crypto-js";
 
-const paymentHandler = async (orderData) => {
+const paymentHandler = async (orderData, cartTotal, shipping, tax) => {
   console.log("payment handler order data", orderData);
   const encodedParams = new URLSearchParams();
   const testKey = "L3s8iR";
   const merchantSalt = "W8EwWT8CEDYO2QGDgE0dd6CoLPJc2ESx";
 
   const txnid = "txnid" + Date.now();
-  // const totalAmount = orderData.totalAmount.toFixed(2);
-  // const productName = orderData.products
-  //   .map((p) => p.productId.name)
-  //   .join(", ");
 
-  const totalAmount = orderData[0].price;
-  const productName = "suraj product";
+  // Calculate totalAmount using cartTotal, shipping, and tax
+  const totalAmount = (cartTotal + shipping + tax).toFixed(2);
+
+  // Join product names correctly
+  const productName = orderData.map((p) => p.productId.name).join(", ");
 
   const hashString = `${testKey}|${txnid}|${totalAmount}|${productName}|John|john@example.com|||||||${merchantSalt}`;
   const hash = CryptoJS.SHA512(hashString).toString();
@@ -25,14 +24,8 @@ const paymentHandler = async (orderData) => {
   encodedParams.set("email", "john@example.com");
   encodedParams.set("phone", "1234567890");
   encodedParams.set("productinfo", productName);
-  encodedParams.set(
-    "surl",
-    "https://test-payment-middleware.payu.in/simulatorResponse"
-  );
-  encodedParams.set(
-    "furl",
-    "https://test-payment-middleware.payu.in/simulatorResponse"
-  );
+  encodedParams.set("surl", "https://ecom-task3-claw.netlify.app/checkout");
+  encodedParams.set("furl", "https://ecom-task3-claw.netlify.app/cart");
   encodedParams.set("hash", hash);
 
   // Add udf1-5 if necessary

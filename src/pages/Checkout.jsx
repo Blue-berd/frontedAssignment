@@ -19,6 +19,8 @@ export const loader = (store) => () => {
 const Checkout = () => {
   const cartTotal = useSelector((state) => state.cartState.cartTotal);
   const cartItems = useSelector((state) => state.cartState.cartItems);
+  const shipping = useSelector((state) => state.cartState.shipping);
+  const tax = useSelector((state) => state.cartState.tax);
 
   if (cartTotal === 0) {
     return <SectionTitle text="Your cart is empty" />;
@@ -26,13 +28,21 @@ const Checkout = () => {
 
   const handleCheckout = async () => {
     try {
-      const paymentSuccess = await paymentHandler(cartItems);
+      const paymentSuccess = await paymentHandler(
+        cartItems,
+        cartTotal,
+        shipping,
+        tax
+      );
       if (!paymentSuccess) {
         throw new Error("Payment failed");
       }
       console.log("payment .............");
       // Place order
-      await postOrder({ products: cartItems, totalAmount: cartTotal });
+      await postOrder({
+        products: cartItems,
+        totalAmount: cartTotal + shipping + tax,
+      });
 
       // Redirect to orders page
       redirect("/orders");
@@ -49,7 +59,7 @@ const Checkout = () => {
         <CartTotals />
         {/* <SubmitBtn onClick={handleCheckout} text="Make Payment" /> */}
         <div onClick={handleCheckout} className="btn btn-primary btn-block">
-          make payment
+          Make Payment
         </div>
       </div>
     </>

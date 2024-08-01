@@ -1,8 +1,8 @@
 import { redirect } from "react-router-dom";
 import { toast } from "react-toastify";
+import { clearCart } from "../features/cart/cartSlice";
 import { customFetch, getToken } from "../utils";
-
-export const postOrder = async (orderData) => {
+export const postOrder = async ({ orderData, dispatch }) => {
   try {
     const token = getToken();
     const response = await customFetch.post("/createOrder", orderData, {
@@ -13,6 +13,8 @@ export const postOrder = async (orderData) => {
     });
 
     toast.success("Order placed successfully");
+    dispatch(clearCart());
+
     redirect("/orders");
 
     return response.data;

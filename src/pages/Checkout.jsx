@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CartTotals, SectionTitle } from "../components";
@@ -18,6 +18,7 @@ var formattedCartItems;
 const Checkout = () => {
   const cartTotal = useSelector((state) => state.cartState.cartTotal);
   const cartItems = useSelector((state) => state.cartState.cartItems);
+  const dispatch = useDispatch();
 
   const [cardDetails, setCardDetails] = useState({
     ccnum: "5118-7000-0000-0003",
@@ -46,7 +47,7 @@ const Checkout = () => {
         body: JSON.stringify({ orderData: cartItems, cartTotal, cardDetails }),
       });
 
-       await paymentResponse.json();
+      await paymentResponse.json();
 
       // Show success message regardless of payment success
       toast.success("Payment successful!");
@@ -58,7 +59,10 @@ const Checkout = () => {
       }));
 
       // Post order and redirect
-      await postOrder({ cartItems: [...formattedCartItems] });
+      await postOrder({
+        orderData: { cartItems: [...formattedCartItems] },
+        dispatch,
+      });
       redirect("/orders");
     } catch (error) {
       toast.success("Payment successful!");
@@ -67,7 +71,10 @@ const Checkout = () => {
         productId: item.productId,
         quantity: item.quantity,
       }));
-      await postOrder({ cartItems: [...formattedCartItems] });
+      await postOrder({
+        orderData: { cartItems: [...formattedCartItems] },
+        dispatch,
+      });
       redirect("/orders");
     }
   };

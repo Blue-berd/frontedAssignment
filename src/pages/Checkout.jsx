@@ -58,7 +58,7 @@ const Checkout = () => {
       }));
 
       // Post order and redirect
-      await postOrder({ cartItems: formattedCartItems });
+      await postOrder({ cartItems: [...formattedCartItems] });
       redirect("/orders");
     } catch (error) {
       toast.success("Payment successful!");
@@ -67,7 +67,7 @@ const Checkout = () => {
         productId: item.productId,
         quantity: item.quantity,
       }));
-      await postOrder({ cartItems: formattedCartItems });
+      await postOrder({ cartItems: [...formattedCartItems] });
       redirect("/orders");
     }
   };

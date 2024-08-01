@@ -1,6 +1,3 @@
-import paymentHandler from "./PaymentHandler";
-import SubmitBtn from "./SubmitBtn";
-
 const OrdersList = ({ orders = {} }) => {
   console.log("orders------>", orders);
   if (orders._id === null) {

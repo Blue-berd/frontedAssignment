@@ -39,7 +39,7 @@ const Checkout = () => {
 
   const handleCheckout = async () => {
     try {
-      const response = await fetch("/api/payment", {
+      const response = await fetch("https://test.payu.in/_payment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

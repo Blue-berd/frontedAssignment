@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { customFetch, getToken } from "../utils";
 
 export const postOrder = async (orderData) => {
+  orderData = [...orderData];
   try {
     const token = getToken();
     const response = await customFetch.post("/createOrder", orderData, {

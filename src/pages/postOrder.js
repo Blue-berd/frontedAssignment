@@ -1,3 +1,4 @@
+import { redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { customFetch, getToken } from "../utils";
 
@@ -12,6 +13,8 @@ export const postOrder = async (orderData) => {
     });
 
     toast.success("Order placed successfully");
+    redirect("/orders");
+
     return response.data;
   } catch (error) {
     const errorMessage =

@@ -25,36 +25,41 @@ const paymentHandler = async (orderData, cartTotal) => {
   encodedParams.set("email", "john@example.com");
   encodedParams.set("phone", "1234567890");
   encodedParams.set("productinfo", productName);
-  encodedParams.set(
-    "surl",
-    "https://test-payment-middleware.payu.in/simulatorResponse"
-  );
-  encodedParams.set(
-    "furl",
-    "https://test-payment-middleware.payu.in/simulatorResponse"
-  );
+  encodedParams.set("surl", "https://test-payment-middleware.payu.in/simulatorResponse");
+  encodedParams.set("furl", "https://test-payment-middleware.payu.in/simulatorResponse");
+  encodedParams.set("pg", "cc");
+  encodedParams.set("bankcode", "cc");
+  encodedParams.set("ccnum", "5123456789012346"); // Replace with actual card number
+  encodedParams.set("ccexpmon", "05"); // Replace with actual expiry month
+  encodedParams.set("ccexpyr", "2024"); // Replace with actual expiry year
+  encodedParams.set("ccvv", "123"); // Replace with actual CVV
+  encodedParams.set("ccname", "John Doe"); // Replace with actual cardholder name
   encodedParams.set("hash", hash);
 
-  // Add udf1-5 if necessary
-  encodedParams.set("udf1", "udf1");
-  encodedParams.set("udf2", "udf2");
-  encodedParams.set("udf3", "udf3");
-  encodedParams.set("udf4", "udf4");
-  encodedParams.set("udf5", "udf5");
+  const url = 'https://test.payu.in/merchant/_payment';
+  const options = {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: encodedParams
+  };
 
-  // Redirect to PayU with the form data
-  const form = document.createElement('form');
-  form.action = "https://test.payu.in/merchant/_payment";
-  form.method = "POST";
-  for (const [key, value] of encodedParams.entries()) {
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = key;
-    input.value = value;
-    form.appendChild(input);
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+    console.log("payment handler payment data", data);
+
+    if (data.status === "success") {
+      return { success: true, data: data.data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return { success: false };
   }
-  document.body.appendChild(form);
-  form.submit();
 };
 
 export default paymentHandler;

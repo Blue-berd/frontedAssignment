@@ -1,8 +1,8 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CartTotals, SectionTitle } from "../components";
-import paymentHandler from "../components/PaymentHandler.js";
 import { getToken } from "../utils";
 import { postOrder } from "./postOrder";
 
@@ -17,16 +17,44 @@ export const loader = (store) => () => {
 };
 
 const Checkout = () => {
-  const cartTotal = useSelector((state) => state.cartState);
+  const cartTotal = useSelector((state) => state.cartState.cartTotal);
   const cartItems = useSelector((state) => state.cartState.cartItems);
 
-  if (cartTotal.cartTotal === 0) {
+  const [cardDetails, setCardDetails] = useState({
+    ccnum: "",
+    ccexpmon: "",
+    ccexpyr: "",
+    ccvv: "",
+    ccname: "",
+  });
+
+  if (cartTotal === 0) {
     return <SectionTitle text="Your cart is empty" />;
   }
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCardDetails({ ...cardDetails, [name]: value });
+  };
+
   const handleCheckout = async () => {
     try {
-      await paymentHandler(cartItems, cartTotal);
+      const response = await fetch("/api/payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ orderData: cartItems, cartTotal, cardDetails }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        await postOrder({ products: cartItems, totalAmount: cartTotal });
+        redirect("/orders");
+      } else {
+        throw new Error("Payment failed");
+      }
     } catch (error) {
       console.error("Checkout error:", error);
       toast.error("There was an issue with your checkout process.");
@@ -36,10 +64,98 @@ const Checkout = () => {
   return (
     <>
       <SectionTitle text="Place Your Order" />
-      <div className="mt-8 grid gap-8 md:grid-cols-2 items-start">
-        <CartTotals />
-        <div onClick={handleCheckout} className="btn btn-primary btn-block">
-          Make Payment
+      <div className="container mx-auto p-4 md:p-8">
+        <div className="flex flex-col md:flex-row gap-8">
+          <div className="flex-1">
+            <CartTotals />
+          </div>
+          <div className="flex-1 bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-2xl font-semibold mb-4">Payment Information</h2>
+            <div className="space-y-4">
+              <div>
+                <label
+                  htmlFor="ccnum"
+                  className="block text-sm font-medium text-gray-700">
+                  Card Number
+                </label>
+                <input
+                  type="text"
+                  id="ccnum"
+                  name="ccnum"
+                  placeholder="1234 5678 9012 3456"
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div className="flex space-x-4">
+                <div className="flex-1">
+                  <label
+                    htmlFor="ccexpmon"
+                    className="block text-sm font-medium text-gray-700">
+                    Expiry Month
+                  </label>
+                  <input
+                    type="text"
+                    id="ccexpmon"
+                    name="ccexpmon"
+                    placeholder="MM"
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label
+                    htmlFor="ccexpyr"
+                    className="block text-sm font-medium text-gray-700">
+                    Expiry Year
+                  </label>
+                  <input
+                    type="text"
+                    id="ccexpyr"
+                    name="ccexpyr"
+                    placeholder="YY"
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  htmlFor="ccvv"
+                  className="block text-sm font-medium text-gray-700">
+                  CVV
+                </label>
+                <input
+                  type="text"
+                  id="ccvv"
+                  name="ccvv"
+                  placeholder="123"
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="ccname"
+                  className="block text-sm font-medium text-gray-700">
+                  Card Holder Name
+                </label>
+                <input
+                  type="text"
+                  id="ccname"
+                  name="ccname"
+                  placeholder="John Doe"
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <button
+                onClick={handleCheckout}
+                className="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                Make Payment
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </>

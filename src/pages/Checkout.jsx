@@ -21,11 +21,11 @@ const Checkout = () => {
   const cartItems = useSelector((state) => state.cartState.cartItems);
 
   const [cardDetails, setCardDetails] = useState({
-    ccnum: "",
-    ccexpmon: "",
-    ccexpyr: "",
-    ccvv: "",
-    ccname: "",
+    ccnum: "5118-7000-0000-0003",
+    ccexpmon: "05",
+    ccexpyr: "25",
+    ccvv: "123",
+    ccname: "John Doe",
   });
 
   if (cartTotal === 0) {
@@ -82,7 +82,8 @@ const Checkout = () => {
                   type="text"
                   id="ccnum"
                   name="ccnum"
-                  placeholder="1234 5678 9012 3456"
+                  placeholder="5118-7000-0000-0003"
+                  value={cardDetails.ccnum}
                   onChange={handleInputChange}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
@@ -99,6 +100,7 @@ const Checkout = () => {
                     id="ccexpmon"
                     name="ccexpmon"
                     placeholder="MM"
+                    value={cardDetails.ccexpmon}
                     onChange={handleInputChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -114,6 +116,7 @@ const Checkout = () => {
                     id="ccexpyr"
                     name="ccexpyr"
                     placeholder="YY"
+                    value={cardDetails.ccexpyr}
                     onChange={handleInputChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -130,6 +133,7 @@ const Checkout = () => {
                   id="ccvv"
                   name="ccvv"
                   placeholder="123"
+                  value={cardDetails.ccvv}
                   onChange={handleInputChange}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
@@ -145,6 +149,7 @@ const Checkout = () => {
                   id="ccname"
                   name="ccname"
                   placeholder="John Doe"
+                  value={cardDetails.ccname}
                   onChange={handleInputChange}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />

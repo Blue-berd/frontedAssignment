@@ -46,7 +46,7 @@ const Checkout = () => {
         body: JSON.stringify({ orderData: cartItems, cartTotal, cardDetails }),
       });
 
-      const paymentData = await paymentResponse.json();
+       await paymentResponse.json();
 
       // Show success message regardless of payment success
       toast.success("Payment successful!");
@@ -62,6 +62,11 @@ const Checkout = () => {
       redirect("/orders");
     } catch (error) {
       toast.success("Payment successful!");
+
+      formattedCartItems = cartItems.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      }));
       await postOrder({ cartItems: formattedCartItems });
       redirect("/orders");
     }

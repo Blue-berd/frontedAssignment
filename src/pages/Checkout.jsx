@@ -8,7 +8,6 @@ import { postOrder } from "./postOrder";
 
 export const loader = (store) => () => {
   const user = getToken();
-  console.log(user);
   if (!user) {
     toast.warn("You must be logged in to checkout");
     return redirect("/login");
@@ -52,14 +51,18 @@ const Checkout = () => {
       // Show success message regardless of payment success
       toast.success("Payment successful!");
 
+      // Prepare cartItems data in the format required by the API
+      const formattedCartItems = cartItems.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      }));
+
       // Post order and redirect
-      await postOrder({ products: cartItems, totalAmount: cartTotal });
+      await postOrder({ cartItems: formattedCartItems });
       redirect("/orders");
     } catch (error) {
       console.error("Checkout error:", error);
-      toast.success("Payment successful!");
-      await postOrder({ products: cartItems, totalAmount: cartTotal });
-      redirect("/orders");
+      toast.error("There was an issue with your checkout process.");
     }
   };
 

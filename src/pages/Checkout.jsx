@@ -4,7 +4,7 @@ import { redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CartTotals, SectionTitle } from "../components";
 import { getToken } from "../utils";
-import { postOrder } from "./postOrder";
+import { postOrder } from "./postOrder.js";
 
 export const loader = (store) => () => {
   const user = getToken();

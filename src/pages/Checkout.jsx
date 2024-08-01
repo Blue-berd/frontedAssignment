@@ -14,7 +14,7 @@ export const loader = (store) => () => {
   }
   return null;
 };
-
+var formattedCartItems;
 const Checkout = () => {
   const cartTotal = useSelector((state) => state.cartState.cartTotal);
   const cartItems = useSelector((state) => state.cartState.cartItems);
@@ -52,7 +52,7 @@ const Checkout = () => {
       toast.success("Payment successful!");
 
       // Prepare cartItems data in the format required by the API
-      var formattedCartItems = cartItems.map((item) => ({
+      formattedCartItems = cartItems.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
       }));

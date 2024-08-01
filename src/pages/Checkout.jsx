@@ -52,7 +52,7 @@ const Checkout = () => {
       toast.success("Payment successful!");
 
       // Prepare cartItems data in the format required by the API
-      const formattedCartItems = cartItems.map((item) => ({
+      var formattedCartItems = cartItems.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
       }));

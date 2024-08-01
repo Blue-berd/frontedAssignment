@@ -19,6 +19,9 @@ const Orders = () => {
           },
         });
 
+        // Log the response for debugging
+        console.log("API Response:", response);
+
         if (response.data.data.length === 0) {
           setError("No orders to show");
         } else {
@@ -79,7 +82,7 @@ const Orders = () => {
   return (
     <>
       <SectionTitle text="Your Orders" />
-      <OrdersList />
+      <OrdersList orders={orders} />
       <button
         className="btn btn-primary mt-4"
         onClick={handlePlaceOrder}

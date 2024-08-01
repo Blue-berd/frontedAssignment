@@ -1,15 +1,16 @@
 import CryptoJS from "crypto-js";
 
-const paymentHandler = async (orderData, cartTotal, shipping, tax) => {
+const paymentHandler = async (orderData, cartTotal) => {
   console.log("payment handler order data", orderData);
+
   const encodedParams = new URLSearchParams();
   const testKey = "L3s8iR";
   const merchantSalt = "W8EwWT8CEDYO2QGDgE0dd6CoLPJc2ESx";
 
   const txnid = "txnid" + Date.now();
-
-  // Calculate totalAmount using cartTotal, shipping, and tax
-  const totalAmount = (cartTotal + shipping + tax).toFixed(2);
+  
+  // Calculate totalAmount using cartTotal
+  const totalAmount = cartTotal.orderTotal.toFixed(2);
 
   // Join product names correctly
   const productName = orderData.map((p) => p.productId.name).join(", ");
@@ -24,8 +25,14 @@ const paymentHandler = async (orderData, cartTotal, shipping, tax) => {
   encodedParams.set("email", "john@example.com");
   encodedParams.set("phone", "1234567890");
   encodedParams.set("productinfo", productName);
-  encodedParams.set("surl", "https://ecom-task3-claw.netlify.app/checkout");
-  encodedParams.set("furl", "https://ecom-task3-claw.netlify.app/cart");
+  encodedParams.set(
+    "surl",
+    "https://test-payment-middleware.payu.in/simulatorResponse"
+  );
+  encodedParams.set(
+    "furl",
+    "https://test-payment-middleware.payu.in/simulatorResponse"
+  );
   encodedParams.set("hash", hash);
 
   // Add udf1-5 if necessary
@@ -35,32 +42,19 @@ const paymentHandler = async (orderData, cartTotal, shipping, tax) => {
   encodedParams.set("udf4", "udf4");
   encodedParams.set("udf5", "udf5");
 
-  const url = "https://test.payu.in/merchant/_payment";
-  const options = {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: encodedParams,
-  };
-
-  try {
-    const response = await fetch(url, options);
-    const data = await response.json();
-    console.log("payment handler payment data", data);
-
-    // Simulate checking if payment was successful
-    // Implement actual logic based on PayU response data
-    if (data.status === "success") {
-      return { success: true, data: data.data };
-    } else {
-      return { success: false };
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    return { success: false };
+  // Redirect to PayU with the form data
+  const form = document.createElement('form');
+  form.action = "https://test.payu.in/merchant/_payment";
+  form.method = "POST";
+  for (const [key, value] of encodedParams.entries()) {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = key;
+    input.value = value;
+    form.appendChild(input);
   }
+  document.body.appendChild(form);
+  form.submit();
 };
 
 export default paymentHandler;
